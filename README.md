@@ -1,6 +1,6 @@
 # 🎨 Cartoon Character Image Classification
 
-A robust, modular CNN implementation for classifying cartoon characters using PyTorch. Designed for high performance and ease of use in collaborative team environments.
+A convolutional neural network (CNN) implemented in PyTorch for classifying cartoon images into their correct categories or shows. Designed to learn visual patterns like color, shape, and texture for accurate image classification in a collaborative deep learning project. . The project focuses on image feature learning through convolutional layers for accurate multi-class image classification
 
 ## 🚀 Quick Start for Team Members
 
