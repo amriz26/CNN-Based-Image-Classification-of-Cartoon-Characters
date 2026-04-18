@@ -51,13 +51,28 @@ def copy_test_set(source_test_dir, target_data_dir):
         shutil.copytree(category, target_path / category_name, dirs_exist_ok=True)
 
 if __name__ == "__main__":
-    SOURCE_ROOT = "/Users/amriziq26/Downloads/cartoon_classification"
-    TARGET_DATA_DIR = "data"
+    # PROJECT-RELATIVE SETUP:
+    # 1. Download the 'Cartoon Classification' dataset from Kaggle
+    # 2. Extract it into 'raw_data/downloaded_dataset'
+    # 3. You should see 'TRAIN' and 'TEST' folders inside that directory.
+    
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    SOURCE_ROOT = BASE_DIR / "raw_data" / "downloaded_dataset"
+    TARGET_DATA_DIR = BASE_DIR / "data"
+
+    if not SOURCE_ROOT.exists():
+        print(f"ERROR: Source directory not found at {SOURCE_ROOT}")
+        print("Please download the dataset and extract it to 'raw_data/downloaded_dataset' first.")
+        print("Link: https://www.kaggle.com/datasets/volkanderekoy/cartoon-classification")
+        exit(1)
 
     # 1. Split TRAIN into train and val
-    split_train_val(os.path.join(SOURCE_ROOT, "TRAIN"), TARGET_DATA_DIR, val_ratio=0.15)
+    # The source Kaggle folder has a 'TRAIN' subfolder with category folders
+    split_train_val(SOURCE_ROOT / "TRAIN", TARGET_DATA_DIR, val_ratio=0.15)
 
     # 2. Copy TEST to test
-    copy_test_set(os.path.join(SOURCE_ROOT, "TEST"), TARGET_DATA_DIR)
+    # The source Kaggle folder has a 'TEST' subfolder with category folders
+    copy_test_set(SOURCE_ROOT / "TEST", TARGET_DATA_DIR)
 
-    print("Data preparation complete.")
+    print("\nData preparation complete!")
+    print(f"Your processed data is now in: {TARGET_DATA_DIR}")
