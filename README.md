@@ -14,8 +14,8 @@ pip install -r requirements.txt
 ```
 
 ### 2. Dataset Acquisition
-We use the **Cartoon Classification** dataset from Kaggle.
-*   **Source:** [Kaggle - Cartoon Classification](https://www.kaggle.com/datasets/volkanderekoy/cartoon-classification)
+We used the **Cartoon Classification** dataset from Kaggle.
+*   **Source Dataset:** ([https://www.kaggle.com/datasets/volkanderekoy/cartoon-classification](https://www.kaggle.com/datasets/volkandl/cartoon-classification))
 *   **Download Instructions:**
     1.  Download the dataset as a ZIP file from the link above.
     2.  Extract the ZIP.
