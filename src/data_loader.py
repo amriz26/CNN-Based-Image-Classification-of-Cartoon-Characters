@@ -1,6 +1,10 @@
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split, Dataset
+import torchvision.utils as vutils
+import matplotlib.pyplot as plt
+plt.switch_backend('agg') # Use non-interactive backend for reliability
+import numpy as np
 import os
 
 class ApplyTransform(Dataset):
@@ -103,26 +107,75 @@ def get_data_loaders(data_dir, batch_size=32, seed=42):
     
     return data_loaders, dataset_sizes, class_names
 
+# --- STEP 4: VALIDATION AND VISUALIZATION ---
+
+def show_batch(dataloader, class_names, num_images=8, save_path=None):
+    """
+    Visualizes a batch of images from a dataloader.
+    Handling denormalization to show colors correctly.
+    """
+    # Get a batch of images and labels
+    images, labels = next(iter(dataloader))
+    
+    # Limit to num_images
+    images = images[:num_images]
+    labels = labels[:num_images]
+    
+    # Denormalize images for visualization
+    # Reversing: pixel = (pixel * std) + mean
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    
+    # Create the grid
+    out = vutils.make_grid(images, nrow=4)
+    
+    # Convert tensor to numpy and transpose (C, H, W) -> (H, W, C)
+    npimg = out.numpy().transpose((1, 2, 0))
+    
+    # Denormalize
+    npimg = std * npimg + mean
+    npimg = np.clip(npimg, 0, 1) # Ensure values are in [0, 1] range
+    
+    # Plotting
+    plt.figure(figsize=(12, 8))
+    plt.imshow(npimg)
+    plt.axis('off')
+    
+    # Label naming
+    title = [class_names[x] for x in labels]
+    plt.title(f"Sample Batch: {', '.join(title[:4])}\n{', '.join(title[4:])}")
+    
+    if save_path:
+        plt.savefig(save_path)
+        print(f"Preview saved to {save_path}")
+    
+    plt.show()
+
 if __name__ == "__main__":
     # Verify the updated pipeline
     DATA_DIR = "raw_data/all_images"
     
     if os.path.exists(DATA_DIR):
         try:
-            print("--- Testing Data Augmentation Pipeline ---")
+            print("--- Initializing Data Validation ---")
             loaders, sizes, classes = get_data_loaders(DATA_DIR)
-            print(f"Classes found: {classes}")
             
-            # Load one batch from the training loader
+            # 1. Print Shape and Sizes
             train_loader = loaders['train']
             images, labels = next(iter(train_loader))
-            
             print(f"\nBatch Information:")
-            print(f"Images batch shape: {images.shape} (Batch Size, Channels, Height, Width)")
+            print(f"Images batch shape: {images.shape} (N, C, H, W)")
             print(f"Labels batch shape: {labels.shape}")
-            print(f"Successfully loaded a batch of {len(images)} augmented images.")
+            print(f"Classes: {classes}")
+            
+            # 2. Visualize
+            print("\nGenerating visualization...")
+            # We save the file so it's easier to verify in head-less environments
+            show_batch(train_loader, classes, save_path="batch_preview.png")
+            
+            print("\nFinal pipeline validation complete.")
             
         except Exception as e:
-            print(f"Error loading data: {e}")
+            print(f"Error during validation: {e}")
     else:
         print(f"Directory '{DATA_DIR}' not found. Please consolidate your images first.")
