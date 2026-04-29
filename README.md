@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 ### 2. Dataset Acquisition
 We used the **Cartoon Classification** dataset from Kaggle.
-*   **Source Dataset:** ([https://www.kaggle.com/datasets/volkanderekoy/cartoon-classification](https://www.kaggle.com/datasets/volkandl/cartoon-classification))
+*   **Source Dataset:** [https://www.kaggle.com/datasets/volkanderekoy/cartoon-classification](https://www.kaggle.com/datasets/volkanderekoy/cartoon-classification)
 *   **Download Instructions:**
     1.  Download the dataset as a ZIP file from the link above.
     2.  Extract the ZIP.
@@ -43,8 +43,8 @@ This will create a `data/` directory with processed images ready for training.
 *   `src/data/`: Modular data pipeline (transforms, datasets, and dataloaders).
 *   `src/setup_data.py`: Script to prepare and split the raw dataset.
 *   `test_data_pipeline.py`: Utility to verify that the pipeline is working correctly.
-*   `data/`: (Auto-generated) Contains the processed train, val, and test splits.
-*   `raw_data/`: (Local only) Container for the raw downloaded dataset.
+*   `data/`: (Auto-generated) Contains the processed `train/`, `val/`, and `test/` splits.
+*   `raw_data/`: (Local only) Container for the raw downloaded dataset (e.g., `downloaded_dataset/TRAIN`).
 
 ## 🧪 Testing the Pipeline
 After setting up the data, you can verify everything is working by running:

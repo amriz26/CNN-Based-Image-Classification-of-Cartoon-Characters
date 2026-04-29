@@ -16,13 +16,13 @@ def main():
         # Test a single batch
         images, labels = next(iter(train_loader))
         print(f"\nTraining Batch Shape: {images.shape}")
-        print(f"Successfully loaded {len(images)} augmented images.")
+        print(f"Successfully loaded {len(images)} images.")
         
         print("\nPipeline check successful! You can now use this import in your training script.")
         
     except Exception as e:
         print(f"Pipeline check failed: {e}")
-        print("Tip: Make sure you've consolidated your images into 'raw_data/all_images' first.")
+        print("Tip: Run 'python src/setup_data.py' to generate the 'data/' folder from your raw images.")
 
 if __name__ == "__main__":
     main()
