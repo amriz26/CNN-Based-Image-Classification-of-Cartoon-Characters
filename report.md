@@ -62,7 +62,7 @@ The model was trained in a PyTorch environment with the following hyperparameter
 ### 5.1 Training Dynamics
 The model showed consistent convergence over 20 epochs. The training loss decreased from ~2.2 to ~0.2, while validation loss stabilized around 0.35, indicating a well-fit model with minimal overfitting.
 
-![CNN Training Metrics](file:///Users/amriziq26/.gemini/antigravity/brain/ee2665a7-521d-4a68-b489-3669e45c4186/training_metrics_plot_1777021538281.png)
+![CNN Training Metrics](./training_metrics.png)
 
 ### 5.2 Performance Metrics
 - **Final Training Accuracy**: 92.4%
@@ -74,7 +74,7 @@ The gap between training and validation accuracy (~8%) suggests that while the m
 ### 5.3 Qualitative Observation
 A preview of the data batches during training confirms that the model successfully identifies the bright, saturated colors typical of *SpongeBob* and the minimalist geometry of *South Park*.
 
-![Sample Batch Preview](file:///Users/amriziq26/.gemini/antigravity/brain/ee2665a7-521d-4a68-b489-3669e45c4186/batch_preview.png)
+![Sample Batch Preview](./batch_preview.png)
 
 ---
 
