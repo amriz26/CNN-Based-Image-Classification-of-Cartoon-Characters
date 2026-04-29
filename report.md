@@ -5,7 +5,6 @@
 ## Abstract
 This project explores the application of Convolutional Neural Networks (CNNs) to the problem of classifying cartoon characters into their respective series. Using the "Cartoon Classification" dataset from Kaggle, we developed a PyTorch-based pipeline and a three-block CNN architecture. Our results demonstrate that a relatively shallow CNN can achieve over 84% validation accuracy by focusing on high-level visual features such as color palettes and character outlines, though challenges remain in handling intra-class style variations.
 
----
 
 ## 1. Introduction
 Image classification in the domain of cartoons presents unique challenges compared to natural image classification. Unlike real-world objects, cartoon characters are defined by exaggerated features, consistent color palettes, and distinct artistic styles. However, within a single show, characters often share these traits, making inter-class discrimination difficult for shallow models.
@@ -18,7 +17,6 @@ Our primary objectives were:
 2.  **Adaptive CNN Architecture**: Design a CNN that automatically adapts to varying input resolutions and class counts.
 3.  **High Performance**: Achieve a baseline validation accuracy significant enough to serve as a foundation for further transfer learning research.
 
----
 
 ## 3. Methodology
 
@@ -45,7 +43,6 @@ graph TD
     F --> Cl[Linear Classifier: 10 Classes]
 ```
 
----
 
 ## 4. Experimental Setup
 The model was trained in a PyTorch environment with the following hyperparameters:
@@ -55,7 +52,6 @@ The model was trained in a PyTorch environment with the following hyperparameter
 - **Training Duration**: 20 Epochs
 - **Hardware**: NVIDIA GPU (CUDA-enabled) for accelerated training.
 
----
 
 ## 5. Explanation of Results
 
@@ -76,7 +72,6 @@ A preview of the data batches during training confirms that the model successful
 
 ![Sample Batch Preview](./batch_preview.png)
 
----
 
 ## 6. Conclusion
 In this work, we developed and evaluated a CNN-based classifier for 10 cartoon character categories. Our modular approach allowed for efficient data handling and consistent experimental results. We learned that character-specific color distributions are a major feature for the model, but shape-based nuances (especially in hand-drawn styles) require deeper architectures. Future work will involve incorporating pre-trained models (Transfer Learning) such as ResNet-50 to further boost accuracy to the mid-90s.
