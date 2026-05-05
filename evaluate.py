@@ -1,7 +1,7 @@
+import json
 import torch
-import torch.nn as nn
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from model import CartoonCNN, load_checkpoint
 from src.data import get_dataloaders
@@ -9,11 +9,24 @@ from src.data import get_dataloaders
 # Configuration
 # CHECKPOINT_PATH: wherever best_model lives
 # BATCH_SIZE: keep at 32 to match training
-# VAL_LOSSES: paste in the list from train.ipynb
+# METRICS_PATH: path to training_metrics.json saved by train.ipynb
 
 CHECKPOINT_PATH = "best_model.pth"
 BATCH_SIZE = 32
-VAL_LOSSES = []
+METRICS_PATH = "training_metrics.json"
+
+# train.ipynb should save a JSON like: {"train_losses": [...], "val_losses: [...]"}
+# If the file is missing, loss curves are skipped
+try:
+    with open(METRICS_PATH) as f:
+        metrics = json.load(f)
+    TRAIN_LOSSES = metrics.get("train_losses", [])
+    VAL_LOSSES = metrics.get("val_losses", [])
+    print(f"Loaded metrics from {METRICS_PATH} ({len(VAL_LOSSES)} epochs)\n")
+except FileNotFoundError:
+    TRAIN_LOSSES = []
+    VAL_LOSSES = []
+    print(f"Warning: {METRICS_PATH} not found. Loss curves will be skipped.\n")
 
 # Load data and model. Returns all three splits plus the class name list
 _, _, test_loader, class_names = get_dataloaders(batch_size=BATCH_SIZE)
@@ -36,7 +49,7 @@ with torch.no_grad():
         # Raw logits: shape(batch, num_classes)
         preds = torch.argmax(outputs, dim=1)
         # Predicted class index per image
-        all_preds.extend(preds.cpu().numpy)
+        all_preds.extend(preds.cpu().numpy())
         # Move back to CPU before converting
         all_labels.extend(labels.numpy())
 
@@ -63,8 +76,9 @@ for i, name in enumerate(class_names):
     class_total = class_mask.sum()
     class_correct = (all_preds[class_mask] == i).sum()
     class_accuracy = (class_correct / class_total) * 100
-    print(f". {name:<20} {class_accuracy:.2f}% ({class_correct}/{class_total})")
-    print()
+    print(f"   {name:<20} {class_accuracy:.2f}% ({class_correct}/{class_total})")
+
+print()
 
 # Confusion Matrix
 """
@@ -95,10 +109,26 @@ Should tell us:
 - Did the training converge?
 
 """
-if VAL_LOSSES:
+if VAL_LOSSES and TRAIN_LOSSES:
     epochs = range(1, len(VAL_LOSSES) + 1)
     plt.figure(figsize=(8, 5))
+    plt.plot(epochs, TRAIN_LOSSES, label="Train Loss", marker="o")
     plt.plot(epochs, VAL_LOSSES, label="Validation Loss", marker="o")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.title("Train vs. Validation Loss Over Training")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("loss_curve.png", dpi=150)
+    plt.show()
+    print("Loss curve saved to loss_curve.png\n")
+elif VAL_LOSSES:
+    # Fallback: if only val losses are available, plot those alone
+    print("Warning: TRAIN_LOSSES missing: plotting validation loss only")
+    epochs = range(1, len(VAL_LOSSES) + 1)
+    plt.figure(figsize=(8, 5))
+    plt.plot(epochs, VAL_LOSSES, label="Validation Loss", marker="o", color="orange")
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
     plt.title("Validation Loss Over Training")
@@ -109,4 +139,4 @@ if VAL_LOSSES:
     plt.show()
     print("Loss curve saved to loss_curve.png\n")
 else:
-    print("VAL_LOSSES is empty. Skipping loss curve")
+    print("No loss data found. Skipping loss curve.\n")
