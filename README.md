@@ -2,6 +2,8 @@
 
 A convolutional neural network (CNN) implemented in PyTorch for classifying cartoon images into their correct categories or shows. Designed to learn visual patterns like color, shape, and texture for accurate image classification in a collaborative deep learning project. . The project focuses on image feature learning through convolutional layers for accurate multi-class image classification
 
+**Google Colab Link**: [https://colab.research.google.com/drive/1L9jlv3Dnxzgz_vfgbd3Hl_3SrqpsYpGM#scrollTo=e4fa9542]
+
 ## 🚀 Quick Start for Team Members
 
 To get started with this project, follow these steps to set up your local environment and data pipeline.
